@@ -16,8 +16,23 @@ class App extends Component {
   state = {
     notes: [],
     folders: [],
-  };
 
+  };
+  handleDelete =(id) => {
+
+    fetch(`http://localhost:9090/notes/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json'
+      },
+    }).then(res => {
+      if(res.ok){
+       this.setState({ notes: (this.state.notes.filter(el => el.id !== id))})
+      } else {
+        throw new Error('wrong')}
+    }).catch(err => alert(err.message))
+    
+  }
   componentDidMount() {
     // fake date loading from API call
     // setTimeout(() => this.setState(dummyStore), 600)
@@ -104,7 +119,7 @@ class App extends Component {
 
   render() {
     return (
-      <MyContext.Provider value={this.state}>
+      <MyContext.Provider value={{folders:this.state.folders, notes:this.state.notes, onDelete: this.handleDelete}}>
         <div className='App'>
           <nav className='App__nav'>
             {this.renderNavRoutes()}
