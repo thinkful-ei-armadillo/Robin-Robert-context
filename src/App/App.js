@@ -8,7 +8,7 @@ import NotePageMain from '../NotePageMain/NotePageMain'
 import AddFolder from '../AddFolder/AddFolder'
 import AddNote from '../AddNote/AddNote'
 import dummyStore from '../dummy-store'
-import { getNotesForFolder, findNote, findFolder } from '../notes-helpers'
+
 import './App.css'
 import MyContext from '../Context';
 
@@ -24,7 +24,7 @@ class App extends Component {
   }
 
   renderNavRoutes() {
-    const { notes, folders } = this.state
+    // const { notes, folders } = this.state
     return (
       <>
         {['/', '/folder/:folderId'].map(path =>
@@ -64,7 +64,7 @@ class App extends Component {
   }
 
   renderMainRoutes() {
-    const { notes, folders } = this.state
+    const { folders } = this.state
     return (
       <>
         {['/', '/folder/:folderId'].map(path =>
@@ -72,27 +72,30 @@ class App extends Component {
             exact
             key={path}
             path={path}
-            render={routeProps => {
-              const { folderId } = routeProps.match.params
-              const notesForFolder = getNotesForFolder(notes, folderId)
-              return (
-                <NoteListMain
-                  {...routeProps}
-                  notes={notesForFolder}
-                />
-              )
-            }}
+            component={NoteListMain}
+            // render={routeProps => {
+            //   const { folderId } = routeProps.match.params
+            //   // const notesForFolder = getNotesForFolder(notes, folderId)
+            //   return (
+            //     <NoteListMain
+            //       {...routeProps}
+            //       folderID = {folderId}
+            //       // notes={notesForFolder}
+            //     />
+            //   )
+            // }}
           />
         )}
         <Route
           path='/note/:noteId'
-          render={routeProps => {
-            const { noteId } = routeProps.match.params
-            const note = findNote(notes, noteId)
-            return (
-              <NotePageMain
-                {...routeProps}
-                note={note}
+          component={NotePageMain}
+          // render={routeProps => {
+          //   const { noteId } = routeProps.match.params
+          //   const note = findNote(notes, noteId)
+          //   return (
+          //     <NotePageMain
+          //       {...routeProps}
+          //       note={note}
               />
             )
           }}

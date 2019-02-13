@@ -9,7 +9,7 @@ import {getNotesForFolder} from '../notes-helpers';
 
 export default function NoteListMain(props) {
   function notesforFolder(notes){
-  const notesForFolder = getNotesForFolder(notes, props.folderId).map(note => (
+  const notesForFolder = getNotesForFolder(notes, props.match.params.folderId).map(note => (
     <li key={note.id}>
       <Note
         id={note.id}
