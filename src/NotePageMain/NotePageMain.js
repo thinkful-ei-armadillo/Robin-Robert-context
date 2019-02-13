@@ -2,7 +2,7 @@ import React,{Component} from 'react'
 import Note from '../Note/Note'
 import './NotePageMain.css'
 import MyContext from '../Context';
-import {getNotesForFolder, findNote} from '../notes-helpers';
+import { findNote} from '../notes-helpers';
 
 export default class NotePageMain extends Component {
 

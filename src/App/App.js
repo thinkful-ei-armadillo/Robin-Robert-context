@@ -20,11 +20,19 @@ class App extends Component {
 
   componentDidMount() {
     // fake date loading from API call
-    setTimeout(() => this.setState(dummyStore), 600)
+    // setTimeout(() => this.setState(dummyStore), 600)
+    Promise.all([fetch('http://localhost:9090/folders'),
+      fetch('http://localhost:9090/notes')])
+      .then(([resF,resN])=> {
+        return Promise.all([
+          resF.json(),
+          resN.json()
+        ])
+      })
+      .then(([folders, notes]) => { this.setState({ notes, folders }) })
   }
 
   renderNavRoutes() {
-    // const { notes, folders } = this.state
     return (
       <>
         {['/', '/folder/:folderId'].map(path =>
@@ -32,11 +40,7 @@ class App extends Component {
             exact
             key={path}
             path={path}
-            render={routeProps =>
-              <NoteListNav
-                {...routeProps}
-              />
-            }
+            component={NoteListNav}
           />
         )}
         <Route
@@ -73,33 +77,12 @@ class App extends Component {
             key={path}
             path={path}
             component={NoteListMain}
-            // render={routeProps => {
-            //   const { folderId } = routeProps.match.params
-            //   // const notesForFolder = getNotesForFolder(notes, folderId)
-            //   return (
-            //     <NoteListMain
-            //       {...routeProps}
-            //       folderID = {folderId}
-            //       // notes={notesForFolder}
-            //     />
-            //   )
-            // }}
           />
         )}
         <Route
           path='/note/:noteId'
           component={NotePageMain}
-          // render={routeProps => {
-          //   const { noteId } = routeProps.match.params
-          //   const note = findNote(notes, noteId)
-          //   return (
-          //     <NotePageMain
-          //       {...routeProps}
-          //       note={note}
-              />
-            )
-          }}
-        />
+          />
         <Route
           path='/add-folder'
           component={AddFolder}
