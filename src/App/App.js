@@ -27,7 +27,7 @@ class App extends Component {
       },
     }).then(res => {
       if(res.ok){
-       this.setState({ notes: (this.state.notes.filter(el => el.id !== id))})
+        this.setState({ notes: (this.state.notes.filter(el => el.id !== id))})
       } else {
         throw new Error('wrong')}
     }).catch(err => alert(err.message))
@@ -39,12 +39,17 @@ class App extends Component {
     Promise.all([fetch('http://localhost:9090/folders'),
       fetch('http://localhost:9090/notes')])
       .then(([resF,resN])=> {
+        if (!resF.ok)
+          return resF.json().then(e => Promise.reject(e))
+        if (!resN.ok)
+          return resN.json().then(e => Promise.reject(e))
         return Promise.all([
           resF.json(),
           resN.json()
         ])
       })
       .then(([folders, notes]) => { this.setState({ notes, folders }) })
+      .catch(err => alert('Error'))
   }
 
   renderNavRoutes() {
